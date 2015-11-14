@@ -2,8 +2,10 @@
 TODO:
  Unit Test:F
  */
+package com.xlan.analysis;
 
-package analysis;
+import java.util.*;
+
 class SignParser {
 
 	private final static List<HashSet<String>> signSetList; //list of hashset, contains hashset for sign in certain length

@@ -1,4 +1,4 @@
-package analysis;
+package com.xlan.analysis;
 
 import java.util.*;	
 

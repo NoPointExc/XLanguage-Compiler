@@ -1,10 +1,10 @@
-package analysis;
+package com.xlan.analysis;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.LinkedList;
-import analysis.Token.Type;
+import com.xlan.analysis.Token.Type;
 
 public class LexicalAnalysis{
 

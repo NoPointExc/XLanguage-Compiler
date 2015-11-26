@@ -2,8 +2,12 @@
 TODO:
  Unit Test:F
  */
+package com.xlan.analysis;
 
-package analysis;
+import java.util.*;
+
+import com.xlan.expections.LexicalAnalysisException;
+
 class SignParser {
 
 	private final static List<HashSet<String>> signSetList; //list of hashset, contains hashset for sign in certain length
@@ -40,8 +44,8 @@ class SignParser {
 			}
 		}
 
-		signSetList =new ArrayList<>(maxLength-minLenght+1);
-		for(int i=0;i<maxLength-minLenght;i++){
+		signSetList =new ArrayList<>(maxLength-minLength+1);
+		for(int i=0;i<maxLength-minLength;i++){
 			signSetList.add(new HashSet<>());
 		}
 
@@ -74,10 +78,10 @@ class SignParser {
 			char c=str.charAt(i);
 			if(stringBuffer==null) stringBuffer=new StringBuilder();
 			stringBuffer.append(c);
-			if(stringBuffer.length()>MaxLength) throws LexicalAnalysisException;						
+			if(stringBuffer.length()>MaxLength) throw new LexicalAnalysisException();						
 			if(match(stringBuffer.toString())){
 				//found sign, add to rst list
-				rst.add(StringBuilder.toString());
+				rst.add(stringBuffer.toString());
 				stringBuffer=null;
 			}
 		}
@@ -85,7 +89,7 @@ class SignParser {
 	}
 	private static boolean match(String str){
 		int strLen=str.length();
-		if(str<MinLength) return false;
+		if(strLen<MinLength) return false;
 		//get the signSet for length=strLen 
 		HashSet<String> signSet=signSetList.get(strLen-MinLength); 
 		return signSet.contains(str);

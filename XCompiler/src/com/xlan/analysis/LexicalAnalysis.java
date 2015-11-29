@@ -47,7 +47,7 @@ public class LexicalAnalysis{
 		boolean moveCursor= true;
 		int next=reader.read();
 		while(next!=-1){
-			System.out.println("next="+" "+(char)next+" cur state="+state);
+			//System.out.println("next="+" "+(char)next+" cur state="+state);
 			moveCursor=readChar((char)next);
 			if(moveCursor) next=reader.read();
 		}
@@ -70,7 +70,6 @@ public class LexicalAnalysis{
 	private void createToken(Type type,String value) {
 		Token token = new Token(type,value);
 		tokenBuffer.addFirst(token);
-		readBuffer=null;
 	}
 		
 
@@ -83,7 +82,7 @@ public class LexicalAnalysis{
 		
 		if(state==State.Normal){
 			//from normal state to jump to other states.
-			//System.out.println(" c="+(int)c+" state="+state);
+			
 			if(inIdentifierSetButNotRear(c)) {
 				state = State.Identifier;
 			}
@@ -113,6 +112,7 @@ public class LexicalAnalysis{
 			}else {
 				throw new LexicalAnalysisException();
 			}
+
 			
 			refreshBuffer(c);
 		}else if(state==State.Identifier){ //number/keyword/var name

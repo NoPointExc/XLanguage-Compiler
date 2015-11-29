@@ -9,4 +9,7 @@
  11/28/2015 8:25 PM
  --------------
  wrong case: if
+ ------------
+ check the out put of token.
+ one '=' in hello word missed
  

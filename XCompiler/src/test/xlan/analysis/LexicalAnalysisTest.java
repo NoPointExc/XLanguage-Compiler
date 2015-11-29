@@ -51,10 +51,11 @@ public class LexicalAnalysisTest {
 
 
 	private void testCodeFile(int index){
+		System.out.println("----------------");
 		try{
 			LexicalAnalysis lexicalAnalysis=analysisList.get(index);
 			LinkedList<Token> tokenList=lexicalAnalysis.read();
-			//System.out.println(tokenList);
+			System.out.println(tokenList);
 
 		}catch(LexicalAnalysisException e){
 			e.printStackTrace();

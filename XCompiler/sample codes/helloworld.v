@@ -1,5 +1,5 @@
 begin
-	var helloWorld="helloWorld!";
+	var helloWorld ="helloWorld!";
 	$print(helloWorld);
 end
 

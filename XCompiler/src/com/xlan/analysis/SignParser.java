@@ -17,7 +17,7 @@ class SignParser {
 	static {
 			String[] signArray = new String[] {
 				"+", "-", "*", "/", "%", 
-				">", "<", ">=", "<=", "=", "!=", "==", "=~",
+				">", "<", ">=", "<=", "=", "!=", "==", "=~","++","--",
 				"+=", "-=", "*=", "/=", "%=",
 				"&&", "||", "!", "^",
 				"&&=", "||=", "^=",
@@ -33,25 +33,30 @@ class SignParser {
 		signCharSet = new HashSet<>();
 		for(String sign:signArray){
 			int length=sign.length();
+			//get min and max length of signs
 			if(length>maxLength){
 				maxLength=length;
 			}
 			if(length<minLength){
 				minLength=length;
 			}
+
 			for(int i=0;i<length;i++){
 				signCharSet.add(sign.charAt(i));
 			}
 		}
 
 		signSetList =new ArrayList<>(maxLength-minLength+1);
-		for(int i=0;i<maxLength-minLength;i++){
+		
+		for(int i=0;i<maxLength-minLength+1;i++){
 			signSetList.add(new HashSet<>());
 		}
-
+		//System.out.println(" size="+signSetList.size());
 		for(String sign: signArray){
 			int length=sign.length();
-			HashSet<String> signSet=signSetList.get(length);
+			//System.out.print("max="+maxLength+" min "+minLength);
+			//System.out.println(" len="+(length-1)+" setSize"+signSetList.size());
+			HashSet<String> signSet=signSetList.get(length-minLength);
 			signSet.add(sign);
 		}
 		MaxLength=maxLength;

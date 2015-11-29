@@ -1,5 +1,6 @@
 package com.xlan.analysis;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
@@ -15,10 +16,10 @@ public class LexicalAnalysis{
 	private boolean transferredMeaningSign=false;
 	private final LinkedList <Token> tokenBuffer=new LinkedList <Token>();
 	private StringBuilder readBuffer=null;
-
+	private BufferedReader reader; //read codes
 	
-	private static final char[] IdentifierRearSign =new char[] {'?','/','-','*','='};
-
+	private static final char[] IdentifierRearSign =new char[] {'?','/','-','*','=',';','<','>','+'};
+	private static final char[] space =new char[]{' ','\n',(char)13, (char)10, (char)9};
 
 	private static final HashMap<Character, Character> StringTMMap = new HashMap<>();
 
@@ -31,7 +32,7 @@ public class LexicalAnalysis{
 		StringTMMap.put('t', '\t');
 		StringTMMap.put('r', '\r');
 		StringTMMap.put('n', '\n');
-		StringTMMap.put('1','\1'); // :)
+		
 	}
 	private static enum State{
 		Normal,Identifier, Sign, Annotation,String, RegEx, Space;
@@ -39,11 +40,18 @@ public class LexicalAnalysis{
 	
 	public LexicalAnalysis(Reader reader){
 		this.state=State.Normal;
+		this.reader=new BufferedReader(reader);
 	}
 
-	public Token read() throws IOException, LexicalAnalysisException{
-		//Token token=new Token();
-		return null;
+	public LinkedList <Token> read() throws IOException, LexicalAnalysisException{
+		boolean moveCursor= true;
+		int next=reader.read();
+		while(next!=-1){
+			System.out.println("next="+" "+(char)next+" cur state="+state);
+			moveCursor=readChar((char)next);
+			if(moveCursor) next=reader.read();
+		}
+		return tokenBuffer;
 	}
 
 
@@ -72,8 +80,10 @@ public class LexicalAnalysis{
 		boolean moveCursor=true;
 		Type createType=null;
 		
+		
 		if(state==State.Normal){
 			//from normal state to jump to other states.
+			//System.out.println(" c="+(int)c+" state="+state);
 			if(inIdentifierSetButNotRear(c)) {
 				state = State.Identifier;
 			}
@@ -89,7 +99,8 @@ public class LexicalAnalysis{
 			else if(c == '\'') {
 				state = State.RegEx;
 			}
-			else if(c==' ') {  
+			else if(include(space,c)) {  
+				//System.out.println("space");
 				state = State.Space;
 			}
 			else if(c == '\n') {
@@ -97,10 +108,12 @@ public class LexicalAnalysis{
 			}
 			else if(c == '\0') {
 				createType = Type.EndSymbol;
-			}
-			else {
+			}else if(c ==';'){
+				createType = Type.EndStatement;
+			}else {
 				throw new LexicalAnalysisException();
 			}
+			
 			refreshBuffer(c);
 		}else if(state==State.Identifier){ //number or keyword
 			if(inIdentifierSetButNotRear(c)){
@@ -185,6 +198,7 @@ public class LexicalAnalysis{
 			}
 		}
 		
+		//create token
 		if(createType!=null) {
 			createToken(createType);
 		}

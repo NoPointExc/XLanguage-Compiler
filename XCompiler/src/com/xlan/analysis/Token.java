@@ -32,12 +32,13 @@ private static final HashSet<String> keywordsSet = new HashSet<String> ();
 
 	public static enum Type {
 		Keyword, Number, Identifier, Sign, Annotation,
-		String, RegEx, Space, NewLine, EndSymbol;
+		String, RegEx, Space, NewLine,EndStatement, EndSymbol;
 	}
 	final Type type;
 	final String value;
 
 	Token(Type type, String value) {
+		//Space,NewLine, no token create
 		if(type == Type.Identifier) {
 			char firstChar = value.charAt(0);
 			if(firstChar >= '0' & firstChar < '9') {
@@ -51,11 +52,19 @@ private static final HashSet<String> keywordsSet = new HashSet<String> ();
 			value=value.substring(1,value.length()-1); // "this is string"
 		}else if(type==Type.RegEx){
 			value=value.substring(1,value.length()-1); // '!notARegEx'
-		}else if(type==Type.EndSymbol){
+		}else if(type==Type.EndSymbol){       //end of code
+			value=null;
+		}else if(type==Type.EndStatement){  //";"
 			value=null;
 		}
 
 		this.type = type;
 		this.value = value;
+	}
+
+	@Override 
+	public String toString(){
+		
+		return this.type.toString();
 	}
 }

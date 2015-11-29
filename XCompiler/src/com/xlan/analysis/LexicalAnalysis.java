@@ -18,7 +18,7 @@ public class LexicalAnalysis{
 	private StringBuilder readBuffer=null;
 	private BufferedReader reader; //read codes
 	
-	private static final char[] IdentifierRearSign =new char[] {'?','/','-','*','=',';','<','>','+'};
+	private static final char[] IdentifierRearSign =new char[] {'?','/','-','*','=',';','<','>','+',')','('};
 	private static final char[] space =new char[]{' ','\n',(char)13, (char)10, (char)9};
 
 	private static final HashMap<Character, Character> StringTMMap = new HashMap<>();
@@ -115,7 +115,7 @@ public class LexicalAnalysis{
 			}
 			
 			refreshBuffer(c);
-		}else if(state==State.Identifier){ //number or keyword
+		}else if(state==State.Identifier){ //number/keyword/var name
 			if(inIdentifierSetButNotRear(c)){
 				readBuffer.append(c);
 			}else if(include(IdentifierRearSign,c)){

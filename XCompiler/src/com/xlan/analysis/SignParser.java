@@ -78,17 +78,47 @@ public class SignParser {
 		int strLen=str.length();
 		List<String> rst=new ArrayList<String>(strLen);
 		StringBuilder stringBuffer=null;
-		for(int i=0;i<strLen;i++){
+		
+		int i=0;
+		boolean moveCursor=true;
+		boolean hasMatched=false;
+		int buffLen=0;
+		while(i<strLen){
+				
 			char c=str.charAt(i);
 			if(stringBuffer==null) stringBuffer=new StringBuilder();
 			stringBuffer.append(c);
-			if(stringBuffer.length()>MaxLength) throw new LexicalAnalysisException();						
-			if(match(stringBuffer.toString())){
-				//found sign, add to rst list
-				rst.add(stringBuffer.toString());
+			buffLen=stringBuffer.length();
+			moveCursor=true;
+
+			if(buffLen>MaxLength){
+				if(hasMatched){
+				String matchedStr=stringBuffer.substring(0,buffLen-1);
+				rst.add(matchedStr);
 				stringBuffer=null;
+				moveCursor=false;
+				hasMatched=false;						
+				}
+				else {
+					throw new LexicalAnalysisException();
+				}
 			}
+
+			if(match(stringBuffer.toString())){
+				hasMatched=true;				
+			}else if(hasMatched){
+				String matchedStr=stringBuffer.substring(0,buffLen-1);
+				rst.add(matchedStr);
+				stringBuffer=null;
+				moveCursor=false;
+				hasMatched=false;							
+			}
+
+			if(moveCursor) i++;
 		}
+
+		if(hasMatched) rst.add(stringBuffer.toString());
+		
 		return rst;
 	}
 	/*

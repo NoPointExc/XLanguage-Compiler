@@ -8,4 +8,7 @@ public class LexicalAnalysisException extends Exception {
 	void LexicalAnalysisException(char c){
 		
 	}
+	void LexicalAnalysisException(String str){
+		
+	}
 }

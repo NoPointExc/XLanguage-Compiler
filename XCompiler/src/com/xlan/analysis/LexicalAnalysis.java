@@ -56,18 +56,22 @@ public class LexicalAnalysis{
 
 
 	private void refreshBuffer(char c){
-		readBuffer=new StringBuilder(c);
+		readBuffer=new StringBuilder();
+		readBuffer.append(c);
+		//System.out.println("refreshed="+readBuffer);
 	}
 
 
 
 	private void createToken(Type type) {
+		System.out.println("type="+type+"   readBuffer="+readBuffer.toString());
 		Token token = new Token(type, readBuffer.toString());
 		tokenBuffer.addFirst(token);
 		readBuffer= null;
 	}
 	
 	private void createToken(Type type,String value) {
+		System.out.println("type="+type+" value="+value);
 		Token token = new Token(type,value);
 		tokenBuffer.addFirst(token);
 	}
@@ -79,11 +83,12 @@ public class LexicalAnalysis{
 		boolean moveCursor=true;
 		Type createType=null;
 		
-		
+		//System.out.println("char="+c+"  state="+state);
 		if(state==State.Normal){
 			//from normal state to jump to other states.
 			
-			if(inIdentifierSetButNotRear(c)) {
+			//readBuffer.append(c);
+			if(inIdentifierSetButNotRear(c)) {				
 				state = State.Identifier;
 			}
 			else if(SignParser.inCharSet(c)) {
@@ -115,29 +120,37 @@ public class LexicalAnalysis{
 
 			
 			refreshBuffer(c);
+			//System.out.println("refreshed="+readBuffer);
 		}else if(state==State.Identifier){ //number/keyword/var name
 			if(inIdentifierSetButNotRear(c)){
 				readBuffer.append(c);
 			}else if(include(IdentifierRearSign,c)){
+				//in the rear, create identifier token, back to normal.
 				createType=Type.Identifier;
-				readBuffer.append(c);
+				moveCursor=false;
 				state=State.Normal;
 			}else{
-				//not identifier char
 				createType=Type.Identifier;
-				state=State.Normal;
 				moveCursor=false;
+				state=State.Normal;
+
+				//not identifier char, not illage rear throws exception
+				//throw new LexicalAnalysisException();
 			}
 
 		}else if(state==State.Sign){
 			if(SignParser.inCharSet(c)){
+				//System.out.println("before append  "+readBuffer );
 				readBuffer.append(c);
+				//System.out.println("append");
 			}else{
+				//System.out.println("readBuffer to parse: "+readBuffer);
 				List<String> list=SignParser.parse(readBuffer.toString()); //exception throw here
+				//System.out.println("list  "+list);
 				for(String signStr:list){
 					createToken(Type.Sign,signStr);
 				}
-				createType =null;
+				createType =null; //create sign
 				state=State.Normal;
 				moveCursor=false;
 			}

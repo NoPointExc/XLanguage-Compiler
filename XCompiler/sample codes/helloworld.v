@@ -1,6 +1,6 @@
 begin
 	var helloWorld ="helloWorld!";
-	$print(helloWorld);
+	print(helloWorld);
 end
 
 

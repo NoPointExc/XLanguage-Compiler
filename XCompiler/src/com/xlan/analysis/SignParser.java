@@ -4,11 +4,12 @@ TODO:
  */
 package com.xlan.analysis;
 
+import com.xlan.expections.LexicalAnalysisException;
 import java.util.*;
 
-import com.xlan.expections.LexicalAnalysisException;
 
-class SignParser {
+
+public class SignParser {
 
 	private final static List<HashSet<String>> signSetList; //list of hashset, contains hashset for sign in certain length
 	private final static HashSet<Character> signCharSet; //all char, like '+' ,'&','<','='
@@ -51,11 +52,9 @@ class SignParser {
 		for(int i=0;i<maxLength-minLength+1;i++){
 			signSetList.add(new HashSet<>());
 		}
-		//System.out.println(" size="+signSetList.size());
+		
 		for(String sign: signArray){
 			int length=sign.length();
-			//System.out.print("max="+maxLength+" min "+minLength);
-			//System.out.println(" len="+(length-1)+" setSize"+signSetList.size());
 			HashSet<String> signSet=signSetList.get(length-minLength);
 			signSet.add(sign);
 		}
@@ -68,7 +67,7 @@ class SignParser {
 	such as '&' in "&&"
 	 */
 	static boolean inCharSet(char c){
-		//TODO
+		//String str=Character.toString(c);
 		return signCharSet.contains(c);	
 	}
 
@@ -92,6 +91,9 @@ class SignParser {
 		}
 		return rst;
 	}
+	/*
+	str matches a sign in map 
+	 */
 	private static boolean match(String str){
 		int strLen=str.length();
 		if(strLen<MinLength) return false;

@@ -32,26 +32,28 @@ public class LexicalAnalysisTest {
 		}
 	}
 
-
-
-	@Test
-	public void test_if(){
-		testCodeFile(0);
-	}
-
-	@Test
-	public void test_for_loop(){
-		testCodeFile(1);
-	}
+//
+//
+//	@Test
+//	public void test_if(){
+//		System.out.println("--------if_else-------");
+//		testCodeFile(0);
+//	}
+//
+//	@Test
+//	public void test_for_loop(){
+//		System.out.println("--------forloop-------");
+//		testCodeFile(1);
+//	}
 
 	@Test
 	public void testHello(){
+		System.out.println("--------helloword-------");
 		testCodeFile(2);
 	}
 
 
 	private void testCodeFile(int index){
-		System.out.println("----------------");
 		try{
 			LexicalAnalysis lexicalAnalysis=analysisList.get(index);
 			LinkedList<Token> tokenList=lexicalAnalysis.read();

@@ -104,7 +104,6 @@ public class LexicalAnalysis{
 				state = State.RegEx;
 			}
 			else if(include(space,c)) {  
-				//System.out.println("space");
 				state = State.Space;
 			}
 			else if(c == '\n') {
@@ -202,7 +201,7 @@ public class LexicalAnalysis{
 				readBuffer.append(c);
 			}
 		}else if(state==State.Space){
-			if(c==' '){
+			if(include(space,c)){
 				readBuffer.append(c);
 			}else{
 				createType=Type.Space;
